@@ -1,0 +1,35 @@
+class Solution {
+    bool checkMid(string &s, string &t, int mid, int maxcost)
+    {
+        int currsum = 0;
+        for(int i=0; i<mid; i++)
+            currsum += abs(s[i]-t[i]);
+        if(currsum <= maxcost)
+            return true;
+        
+        for(int e=mid,st=0; e<s.length(); st++,e++)
+        {
+            currsum -= abs(s[st]-t[st]);
+            currsum += abs(s[e]-t[e]);
+            if(currsum<=maxcost)
+                return true;
+        }
+        return false;
+    }
+public:
+    int equalSubstring(string s, string t, int maxCost) {
+        int low = 0, high = s.length(), ans = 0;
+        while(low <= high)
+        {
+            int mid = (low + high)/2;
+            if(checkMid(s,t,mid,maxCost))
+            {
+                ans = mid;
+                low = mid + 1;
+            }
+            else
+                high = mid - 1;
+        }
+        return ans;
+    }
+};

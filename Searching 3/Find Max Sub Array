@@ -1,0 +1,33 @@
+bool possMid(vector<int>&arr, int s, int k)
+{
+    int ws = 0;
+    for(int i=0; i<mid; i++)
+        ws += arr[i];
+    if(ws != s)
+        return 0;
+    int st = 0;
+    for(int e = mid; e<arr.size(); e++)
+    {
+        ws = ws - arr[st++] + arr[e];
+        if(ws != s)
+            return 0;
+    }
+    return 1;
+}
+int findMaxSubArray(vector<int>& arr, int s)
+{
+    int low = 0, high = arr.size();
+    int ans = 0;
+    while(low<=high)
+    {
+        int mid = high - (high - low)/2;
+        if(possmid(arr,s,mid))
+        {
+            ans = mid;
+            low = mid + 1;
+        }
+        else
+            high = mid - 1;
+    }
+    return ans; 
+}

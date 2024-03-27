@@ -1,0 +1,66 @@
+class Solution {
+public:
+  //Iterative  
+vector<vector<int>> verticalTraversal(TreeNode* root) {
+        map<int,map<int,multiset<int>>> nodes;
+        queue<pair<TreeNode*,pair<int,int>>> q;
+        q.push({root,{0,0}});
+        while(!q.empty())
+        {
+            auto p=q.front();
+            q.pop();
+            TreeNode* node=p.first;
+            int x=p.second.first;
+            int y=p.second.second;
+            nodes[x][y].insert(node->val);
+            if(node->left!=NULL)
+                q.push({node->left,{x-1,y+1}});
+            if(node->right!=NULL)
+                q.push({node->right,{x+1,y+1}});
+        }
+        vector<vector<int>> ans;
+        for(auto i:nodes)
+        {
+            vector<int> col;
+            for(auto j:i.second)
+                col.insert(col.end(),j.second.begin(),j.second.end());
+            ans.push_back(col);
+        }
+        return ans;
+    }
+};
+
+//recursive
+class Solution {
+public:
+    void vertical(TreeNode* &root, int hd, map<int, vector<int>> &m){
+            
+            if(root==NULL){
+                return;
+            }
+        m[hd].push_back(root->val);
+        vertical(root->left, hd-1, m);
+        vertical(root->right, hd+1, m);
+            
+    }
+    
+    vector<vector<int>> verticalTraversal(TreeNode* root) {
+        map<int, vector<int>> m;
+        int hd=0;
+        vertical(root, hd, m);
+        vector<int> preV;
+        vector<vector<int>> v;
+        
+        map<int, vector<int>> :: iterator it;
+        
+        for( it=m.begin(); it!=m.end(); it++){
+            for(int i=0; i<(it->second).size(); i++){
+                preV.push_back((it->second)[i]);
+                sort(preV.begin() , preV.end());
+            }
+            v.push_back(preV);
+            preV.clear();
+        }
+        return v;
+    }
+};

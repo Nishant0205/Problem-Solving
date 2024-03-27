@@ -1,0 +1,64 @@
+// Iterative 
+
+class Solution
+{
+    public:
+    vector<int> topView(Node *root)
+    {
+       vector<int> v;
+        map<int,int> m;
+        queue< pair<Node*, int> > q;
+        q.push({root, 0});
+        
+        while(q.empty() == false){
+            auto p = q.front();
+            q.pop();
+            int hd = p.second;
+            Node *curr = p.first;
+            
+            if(m.find(hd) == mp.end())
+                m[hd] = curr->data;
+            
+            if(curr->left!=NULL) q.push({curr->left, hd-1});
+            if(curr->right!=NULL) q.push({curr->right, hd+1});
+        }
+        for(auto p:m){
+            v.push_back(p.second);
+        }
+        
+        return v;
+    }
+
+};
+
+// Recursive
+void trev(Node *root,int index,int level,map<int ,map<int,vector<int>>> &m)
+    {
+        if(root==NULL)
+        return ;
+        m[index][level].push_back(root->data);
+        trev(root->left,index-1,level+1,m);
+        trev(root->right,index+1,level+1,m);
+    } 
+    void Order(Node *root,vector<int> &ans)
+    {
+        map<int ,map<int,vector<int>>> m;
+        trev(root,0,0,m);        
+        for(auto i:m)
+        {
+            int val=i.second.begin()->second[0];
+            ans.push_back(val);
+        }
+        
+    }
+    
+    vector<int> topView(Node *root)
+    {
+        map<int ,map<int,int>> m;
+        vector<int> ans;
+        Order(root,ans);
+        return ans;
+    }
+
+
+

@@ -1,0 +1,30 @@
+class Solution {
+public:
+    int findBottomLeftValue(TreeNode* root) {
+        queue<TreeNode*> q;
+        TreeNode* t = NULL;
+        q.push(root);
+        q.push(t);
+        int ans = root->val;
+        while(!q.empty())
+        {
+            TreeNode* temp = q.front();
+            q.pop();
+            if(temp == NULL)
+            {
+                q.push(t);
+                if(q.front()!=NULL)
+                    ans= q.front()->val;
+                else
+                    break;
+                continue;
+            }
+            cout<<temp->val<<" ";
+            if(temp->left!=NULL)
+                q.push(temp->left);
+            if(temp->right!=NULL)
+                q.push(temp->right);
+        }
+        return ans;
+    }
+};

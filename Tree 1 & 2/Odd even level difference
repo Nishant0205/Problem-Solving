@@ -1,0 +1,29 @@
+class Solution{
+  public:
+    int getLevelDiff(Node *root)
+    {
+        queue<Node*>q;
+        q.push(root);
+        bool isOdd=true;
+        int odd=0;
+        int even=0;
+        while(!q.empty()){
+            int size=q.size();
+            for(int i=0;i<size;i++){
+                Node*frontNode=q.front();
+                q.pop();
+                if(isOdd)
+                odd+=frontNode->data;
+                else
+                even+=frontNode->data;
+                if(frontNode->left)
+                q.push(frontNode->left);
+                
+                if(frontNode->right)
+                q.push(frontNode->right);
+            }
+            isOdd=!isOdd;
+        }
+        return odd-even;
+    }
+};

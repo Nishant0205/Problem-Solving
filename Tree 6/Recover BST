@@ -1,0 +1,30 @@
+class Solution {
+        TreeNode* element1 = new TreeNode();
+        TreeNode* element2 = new TreeNode();
+        TreeNode* prev = new TreeNode(INT_MIN);
+        bool pair1found = 0;
+        
+    void inorder(TreeNode* root)
+    {
+        if(root == NULL) 
+            return;
+        inorder(root->left);
+        if(root->val < prev->val && !pair1found )
+        {
+            element1 = prev;
+            element2 = root;
+            pair1found = 1;
+        }
+        else if(root->val < prev->val)
+            element2 = root;
+        prev = root;
+        inorder(root->right);
+    }
+public:
+    void recoverTree(TreeNode* root) {
+        inorder(root);
+        int temp = element1->val;
+        element1->val = element2->val;
+        element2->val = temp;
+    }
+};

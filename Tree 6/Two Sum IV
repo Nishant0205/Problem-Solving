@@ -1,0 +1,27 @@
+class Solution {
+public:
+    void build(vector<int>& inorder,TreeNode* root)
+    {
+        if(root==NULL)
+            return ;
+        build(inorder,root->left);
+        inorder.push_back(root->val);
+        build(inorder,root->right);
+    }
+    bool findTarget(TreeNode* root, int k) {
+        vector<int> inorder;
+        build(inorder,root);
+        int st=0,en=inorder.size()-1;
+        while(st<en)
+        {
+            int sum=inorder[st]+inorder[en];
+            if(sum==k)
+                return true;
+            else if(sum<k)
+                st++;
+            else
+                en--;
+        }
+        return false;
+    }
+};

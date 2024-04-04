@@ -1,0 +1,19 @@
+int find(Node* root, int x, int mx)
+{
+    if (root == NULL) 
+        return mx;
+    if(root->data >= x)
+        mx = min(mx,root->data);
+    int lt = find(root->left,x,mx);
+    int rt = find(root->right,x,mx);
+    return min(mx,min(lt,rt));
+}
+
+int findCeil(Node* root, int x) 
+{
+    int mx = INT_MAX;
+    int t = find(root,x,mx);
+    if(t == INT_MAX)
+        return -1;
+    return t;
+}

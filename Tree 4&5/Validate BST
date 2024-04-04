@@ -1,0 +1,15 @@
+class Solution {
+    int ctm=0,ctn=0;
+public:
+    bool checkRange(TreeNode* root, long lb, long ub)
+    {
+        if(root==NULL)
+            return true;
+        if(root->val>=ub || root->val<=lb )
+            return false;
+        return checkRange(root->left,lb,root->val) && checkRange(root->right,root->val,ub);
+    }
+    bool isValidBST(TreeNode* root) {
+        return checkRange(root,LONG_MIN,LONG_MAX);
+    }
+};

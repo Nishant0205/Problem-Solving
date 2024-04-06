@@ -1,0 +1,32 @@
+#include<bits/stdc++.h>
+using namespace std;
+ 
+bool checkSingleChild(vector<int> pre)
+{
+    int nextDiff, lastDiff;
+    for (int i=0; i<pre.size()-1; i++)
+    {
+        nextDiff = pre[i] - pre[i+1];
+        lastDiff = pre[i] - pre[pre.size()-1];
+        if (nextDiff*lastDiff < 0)
+            return false;
+    }
+    return true;
+}
+ 
+int main()
+{
+    int n;
+    cout<<"How many elements you want to enter ";
+    cin>>n;
+    cout<<"Enter Elements ";
+    vector<int> pre(n);
+    
+    for(int i=0; i<n; i++)
+        cin>>pre[i];
+    if (checkSingleChild(pre))
+        cout<<"Yes";
+    else
+        cout<<"No";
+    return 0;
+}

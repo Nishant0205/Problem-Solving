@@ -1,9 +1,59 @@
+struct Node
+{
+    char ch;
+    Node* links[26];
+    bool isTerminal;
+    string word;
+
+    Node(char ch)
+    {
+        this->ch = ch;
+        isTerminal = false;
+        for(int i=0; i<26; i++)
+            links[i] = NULL;
+        word = "";
+    }
+};
+
 class Solution {
+    Node* root = new Node(' ');
+    void insert(string &word)
+    {
+        int n = word.size();
+        Node* curr = root;
+        for(int i = 0; i < n; i++)
+        {
+            if(curr -> links[word[i] - 'a'] == NULL)
+                curr -> links[word[i] - 'a'] = new Node(word[i]); 
+            curr = curr -> links[word[i] - 'a'];
+        }
+        curr->isTerminal = true;
+        curr->word = word;
+    }
+    string search(string &word)
+    {
+        auto curr = root;
+        int n=word.size();
+        for(int i=0;i<n;i++){
+            if(curr->isTerminal==true)
+            return curr->word;
+
+            int idx=word[i]-'a';
+
+            if(curr->links[idx]==NULL)
+            {
+                return word;
+            }
+
+            curr=curr->links[idx];
+        }
+
+        return word;
+   }
 public:
     string replaceWords(vector<string>& dictionary, string sentence) {
-        map<string,bool> m;
         for(auto& word : dictionary)
-            m[word] = 1;
+            insert(word);
         vector<string> v;
         string temp="";
         for(int i=0; i<sentence.length(); i++)
@@ -20,17 +70,10 @@ public:
         string ans = "";
         for(int i=0; i<v.size(); i++)
         {
-            temp = "";
-            for(int j=0; j<v[i].size(); j++)
-            {
-                temp+=v[i][j];
-                if(m[temp])
-                    break;
-            }
-            ans+=temp;
-            ans+=" ";
+            ans+=search(v[i]);
+            ans.push_back(' ');
         }
-        ans.erase(ans.size()-1);
+        ans.pop_back();
         return ans;
     }
 };

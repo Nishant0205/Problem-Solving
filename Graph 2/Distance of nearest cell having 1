@@ -1,0 +1,28 @@
+ int n = G.size(), m = G[0].size();
+    queue<pair<int, int>> Q;
+    
+    for (int i = 0; i < n; i++) {
+        for (int j = 0; j < m; j++)
+        {
+            G[i][j]-=1;
+            if (G[i][j] == 0)   Q.push({i, j});
+        }
+    }
+ 
+    vector<vector<int>> directions = {{-1, 0}, {0, 1}, {1, 0}, {0, -1}};
+ 
+    while (!Q.empty()) {
+        pair<int, int> P = Q.front();
+        Q.pop();
+        int x = P.first, y = P.second;
+ 
+        for (auto &dir : directions) {
+            int i = x + dir[0], j = y + dir[1];
+            if (i >= 0 && i < n && j >= 0 && j < m && G[i][j] == -1) {
+                G[i][j] = G[x][y] + 1;
+                Q.push({i, j});
+            }
+        }
+    }
+ 
+    return G;

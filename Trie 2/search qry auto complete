@@ -1,0 +1,60 @@
+class TrieNode {
+    unordered_map<string, int> f;
+    unordered_map<char, TrieNode*> child;    
+};
+
+class AutocompleteSystem {
+private:
+    TrieNode* root;
+    TrieNode* curr;
+    string qry;
+    bool comfrq(pair<string, int>& s1, pair<string, int>& s2) 
+    {
+        return s1.second > s2.second || (s1.second == s2.second && s1.first < s2.first);
+    }
+public:   
+    AutocompleteSystem(vector<string>& sentences, vector<int>& times) {
+        root = new TrieNode();
+        curr = root;
+        qry = "";
+        for (int i = 0; i < sentences.size(); ++i)
+            insert(sentences[i], times[i]);
+    }
+
+      void insert(string sen, int time) {
+        TrieNode* node = root;
+        for (char ch : sen) {
+            if (!node->child[ch]) {
+                node->child[ch] = new TrieNode();
+            }
+            node = node->child[ch];
+            node->f[sen] += time;
+        }
+    }
+    
+    vector<string> input(char c) {
+        if (c == '#') 
+        {
+            insert(qry, 1);
+            qry = "";
+            curr = root;
+            return {};
+        }
+        qry += c;
+        if (!curr->child[c]) 
+        {
+            curr->child[c] = new TrieNode();
+            curr = curr->child[c];
+            return {};
+        }
+        curr = curr->child[c];
+        vector<pair<string, int>> suggestions(curr->f.begin(), curr->f.end());
+        sort(suggestions.begin(), suggestions.end(), comfrq);
+        vector<string> ans;
+        for (int i = 0; i < min(3, (int)suggestions.size()); ++i)
+        {
+            ans.push_back(suggestions[i].first);
+        }
+        return ans;
+    }
+};

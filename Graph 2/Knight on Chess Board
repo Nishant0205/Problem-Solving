@@ -1,0 +1,30 @@
+int Solution::knight(int A, int B, int C, int D, int E, int F) {
+    vector<vector<bool>> vis(A+1,vector<bool>(B+1,0));
+    queue<vector<int>> q;
+    
+    vis[C][D] = 1;
+    q.push({0,C,D});
+
+    while(!q.empty()){
+        int totalMoves = q.front()[0];
+        int ci = q.front()[1];
+        int cj = q.front()[2];
+        if(ci == E and cj==F)
+            return totalMoves;
+        q.pop();
+        int advrow[] = {-2,-2,2,2,-1,1,-1,1};
+        int advcol[] = {-1,1,-1,1,2,2,-2,-2};
+        
+        for(int k=0;k<8;k++)
+        {
+            int ni = ci + advrow[k];
+            int nj = cj + advcol[k];
+            if(ni>=1 and nj>=1 and ni<=A and nj<=B and !vis[ni][nj])
+            {
+                vis[ni][nj] = 1;
+                q.push({totalMoves + 1,ni,nj});
+            }
+        }
+    }
+    return -1;
+}

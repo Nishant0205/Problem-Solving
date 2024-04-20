@@ -1,0 +1,47 @@
+int dfs(vector<int> adj[] , int sv , int &v1 , int &v2 , int par , int root_node , int &res)
+{
+    if(adj[sv].size()==1 && sv!=root_node)
+        return 1;
+    
+    int l1=0 , l2=0 , val=INT_MIN ;
+    for(auto x : adj[sv])
+    {
+        if(par!=x)
+        {
+            int temp = dfs(adj , x , v1 , v2 , sv , root_node ,res );
+            val = max(val , temp);
+            if(temp >= l1)
+            {
+                l2=l1;
+                l1=temp;
+            }
+            else if(temp>l2)
+                l2=temp;
+        }
+    }
+   
+    if(res < (l1+l2))
+        res=l1+l2;
+   
+    return val+1;
+}
+
+int Solution::solve(vector<int> &A) {
+    int n=A.size();
+    vector<int> adj[n];
+    int root_node;
+    for(int i=0;i<n;i++)
+    {
+        if(A[i]==-1)
+            root_node=i;
+        else
+            adj[A[i]].push_back(i);
+            adj[i].push_back(A[i]);
+    }
+   
+    int res=0;
+    int v1 , v2 ;
+    dfs(adj , root_node , v1 , v2 , -1 , root_node , res);
+   
+    return res;  
+}
